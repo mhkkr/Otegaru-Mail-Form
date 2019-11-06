@@ -3,7 +3,9 @@ PHP Contact Mail Form
 
 ## テンプレート例
 
-```edit.php<?= $template('edit', [
+edit.php
+```php
+<?= $template('edit', [
     'key' => 'お名前',
     'label' => 'おなまえ',
     'attribute' => [
@@ -28,7 +30,9 @@ PHP Contact Mail Form
 ]); ?>
 ```
 
-```例：confirm.php<?= $template('例：confirm', [
+confirm.php
+```php
+<?= $template('例：confirm', [
     'key' => 'お名前',
     'label' => 'おなまえ',
     'return_body' => '
