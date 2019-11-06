@@ -1,5 +1,5 @@
 # Otegaru Mail Form
-PHP Contact Mail Form
+PHP で動作するお手軽なメールフォームです。
 
 Functions Form を改修していて、無理なことが増えたので、
 ほとんど作り替えたものになります。  
