@@ -1,6 +1,11 @@
 # Otegaru Mail Form
 PHP Contact Mail Form
 
+Functions Form を改修していて、無理なことが増えたので、
+ほとんど作り替えたものになります。
+今後はこちらを更新していきます。
+
+
 ## テンプレート例
 
 edit.php
