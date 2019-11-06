@@ -2,7 +2,7 @@
 PHP Contact Mail Form
 
 Functions Form を改修していて、無理なことが増えたので、
-ほとんど作り替えたものになります。
+ほとんど作り替えたものになります。  
 今後はこちらを更新していきます。
 
 
@@ -37,7 +37,7 @@ edit.php
 
 confirm.php
 ```php
-<?= $template('例：confirm', [
+<?= $template('confirm', [
     'key' => 'お名前',
     'label' => 'おなまえ',
     'return_body' => '
