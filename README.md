@@ -1,9 +1,9 @@
 # Otegaru Mail Form
 メールフォームがお手軽に作れる PHP スクリプトです。
 
-以前使用していた (Functions Form)[https://github.com/mhkkr/Functions-Form] を改修していて、　　
-無理なことが増えたのでほとんど作り替えたものになります。  
-今後はこちらを更新していきます。
+以前使用していた [Functions Form](https://github.com/mhkkr/Functions-Form) を改修したスクリプト。  
+煩雑なコードを見直して作り直しました。  
+機能的にはあまり変わっていませんが、カスタマイズを考慮した設計になりました。
 
 ## テンプレート例
 
