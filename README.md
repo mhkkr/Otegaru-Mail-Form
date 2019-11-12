@@ -25,7 +25,8 @@ PHP Contact Mail Form
     ',
     'error_body' => '<p>{{ error_text }}</p>',
     'add_body' => '<p>hoge</p>',
-]); ?>```
+]); ?>
+```
 
 ```例：confirm.php<?= $template('例：confirm', [
     'key' => 'お名前',
@@ -41,7 +42,8 @@ PHP Contact Mail Form
             </div>
         </div>
     ',
-]); ?>```
+]); ?>
+```
 
 ## 今後の予定
 - 使い方をちゃんとする・・・
