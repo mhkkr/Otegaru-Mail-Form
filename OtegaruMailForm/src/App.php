@@ -1,24 +1,6 @@
 <?php
 
-/**
- * Otegaru Mail Form 本体ファイル
- *
- * 自分用に使っていたお問い合わせフォームを、
- * 使い回しが可能で、汎用性の高いテンプレートとして改修しました。
- * Qdmail + Qdsmtp のライブラリを使用して送信しています。
- *
- * PHP 7.0 Over
- * 
- * @copyright Copyright 2019 mhkkr
- * @link      https://github.com/mhkkr/Otegaru-Mail-Form
- *            https://github.com/mhkkr/Functions-Form (Old version)
- * @version   1.0.0
- * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
- */
-
-spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
-});
+namespace OtegaruMailForm\Src;
 
 /**
  * 本体クラス
@@ -28,10 +10,10 @@ class App
     use Utility;
 
     /** 
-     * @var array SUPPORT_FILE_LIST サポートファイルのリストを定義する
-     * [
-     *     ファイルパス, コールバックメソッド
-     *     [__DIR__ . 'hoge.txt', 'Hoge']
+     * @var array SUPPORT_FILE_LIST サポートファイルのリストを定義する  
+     * [  
+     *     ファイルパス, コールバックメソッド  
+     *     [__DIR__ . 'hoge.txt', 'Hoge']  
      * ]
      */
     const SUPPORT_FILE_LIST = [];
@@ -96,7 +78,7 @@ class App
     }
 
     /**
-     * 項目設定をアップデート
+     * 項目設定をアップデート  
      * 設定がなかった配列に初期値を付与する
      * @param  array $item
      * @return array $item
@@ -197,25 +179,26 @@ class App
 
         if (!empty($_POST)) {
             $submit = filter_input(INPUT_POST, 'submit');
-            $this->authReferer();
-            $this->authToken();
-            $this->authRequest();
-
-            if ($submit === 'rewrite') {
-                $this->rewriteScreen();
-            } elseif ($submit === 'confirm') {
-                $this->confirmScreen();
-            } elseif ($submit === 'complete') {
-                $this->completeScreen();
+            if (
+                $this->allowReferer() && $this->allowToken() && $this->allowRequest()
+                && ($submit === 'rewrite' || $submit === 'confirm' || $submit === 'complete')
+            ) {
+                if ($submit === 'rewrite') {
+                    $this->rewriteScreen();
+                } elseif ($submit === 'confirm') {
+                    $this->confirmScreen();
+                } elseif ($submit === 'complete') {
+                    $this->completeScreen();
+                }
             } else {
-                $this->redirectInitScreen();
+                $this->errorScreen();
             }
         } else {
             $mode = filter_input(INPUT_GET, 'mode');
             if ($mode === 'success') {
-                Store::setScreenName('success');
+                $this->successScreen();
             } elseif ($mode === 'failure') {
-                Store::setScreenName('failure');
+                $this->failureScreen();
             } else {
                 $this->editScreen();
             }
@@ -223,40 +206,46 @@ class App
     }
 
     /**
-     * 正しいリファラーか検査する、認められない場合は初期画面へ
+     * 正しいリファラーか検査する
+     * @return bool
      */
-    protected function authReferer()
+    protected function allowReferer()
     {
         if (Store::getConfig()['setting']['referer_url']) {
             if (!isset($_SERVER['HTTP_REFERER']) || (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], Store::getConfig()['setting']['referer_url']) === false)) {
-                $this->redirectInitScreen();
+                return false;
             }
         }
+        return true;
     }
 
     /**
-     * 正しいトークンか検査する、認められない場合は初期画面へ
+     * 正しいトークンか検査する
+     * @return bool
      */
-    protected function authToken()
+    protected function allowToken()
     {
         $post_token = isset($_POST['token']) && !$this->isEmpty($_POST['token']) ? $_POST['token'] : '';
         $token = $this->getToken();
         if ($post_token !== $token || empty($post_token) || empty($token)) {
-            $this->redirectInitScreen();
+            return false;
         }
+        return true;
     }
 
     /**
-     * 正しいリクエストか検査する、認められない場合は初期画面へ
+     * 正しいリクエストか検査する
+     * @return bool
      */
-    protected function authRequest()
+    protected function allowRequest()
     {
         if (
             !(isset($_SESSION[Store::getConfig()['setting']['id']]) && !empty($_SESSION[Store::getConfig()['setting']['id']]))
             || !(isset($_POST['submit']) && !$this->isEmpty($_POST['submit']))
         ) {
-            $this->redirectInitScreen();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -271,7 +260,7 @@ class App
         $item = Store::getConfig()['item'][$key];
         $method_name = $item['validation'];
 
-        $Validation = new ValidationExtends();
+        $Validation = new \OtegaruMailForm\Validation();
         if (method_exists($Validation, $method_name)) {
             $validation_message = $Validation->$method_name($form, $key, $val);
             return !$this->isEmpty($validation_message) && !$this->isEmpty($item['validation_message']) ? $item['validation_message'] : $validation_message;
@@ -365,7 +354,7 @@ class App
     protected function rewriteScreen()
     {
         Store::setScreenName('edit');
-        Store::setSubmitName('rewrite');
+        Store::setPostSubmit('rewrite');
 
         // セッションから入力値を取得する
         $this->registerRequestFormContent($_SESSION[Store::getConfig()['setting']['id']]['input']);
@@ -376,7 +365,7 @@ class App
      */
     protected function confirmScreen()
     {
-        Store::setSubmitName('confirm');
+        Store::setPostSubmit('confirm');
         $has_form_error = $this->registerRequestFormContent($_POST);
 
         if ($has_form_error) {
@@ -397,8 +386,33 @@ class App
      */
     protected function completeScreen()
     {
-        Store::setSubmitName('complete');
+        Store::setPostSubmit('complete');
         $this->send();
+    }
+
+    /**
+     * 送信成功画面
+     */
+    protected function successScreen()
+    {
+        Store::setScreenName('success');
+    }
+
+    /**
+     * 送信失敗画面
+     */
+    protected function failureScreen()
+    {
+        Store::setScreenName('failure');
+    }
+
+    /**
+     * エラー画面
+     */
+    protected function errorScreen()
+    {
+        Store::setScreenName('error');
+        $this->destroySession();
     }
 
     /**
@@ -519,7 +533,7 @@ class App
 
         $this->destroySession();
 
-        new SendExtends();
+        new \OtegaruMailForm\Send();
     }
 
     /**
@@ -530,7 +544,7 @@ class App
      */
     protected function template(string $mode, array $options)
     {
-        $Template = new TemplateExtends();
+        $Template = new \OtegaruMailForm\Template();
         return $Template->generate($mode, $options);
     }
 

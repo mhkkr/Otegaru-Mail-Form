@@ -1,5 +1,7 @@
 <?php
 
+namespace OtegaruMailForm\Src;
+
 /**
  * ユーティリティークラス
  */

@@ -1,5 +1,7 @@
 <?php
 
+namespace OtegaruMailForm\Src;
+
 /**
  * バリデーションを管理するクラス
  */
@@ -23,7 +25,7 @@ class Validation
                 return '入力値が' . $item['confirm'] . 'と同一である必要があります。';
             }
         } else {
-            return '設定で指定がるべき同一値の参照先が不明でした。';
+            return '設定で指定があるべき同一値の参照先が不明でした。';
         }
     }
 

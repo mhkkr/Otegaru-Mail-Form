@@ -1,6 +1,6 @@
 <?php
 require(__DIR__ . '/OtegaruMailForm/OtegaruMailForm.php');
-$OtegaruMailForm = new OtegaruMailForm;
+$OtegaruMailForm = new OtegaruMailForm\App;
 ?>
 <!DOCTYPE html>
 <html lang="ja">

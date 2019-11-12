@@ -1,5 +1,7 @@
 <?php
 
+namespace OtegaruMailForm\Src;
+
 /**
  * テンプレートを管理するクラス
  */
@@ -111,9 +113,12 @@ class Template
 
         // セッションからフォーム値を取得した際、インデックスに相違があるとエラーが出るため一度確認する
         $input_value = '';
-        if ((Store::getSubmitName() === 'rewrite' || Store::getSubmitName() === 'confirm') && isset($input[$keyId])) {
+        if ((Store::getPostSubmit() === 'rewrite' || Store::getPostSubmit() === 'confirm') && isset($input[$keyId])) {
             $input_value = $input[$keyId];
         }
+
+        // TODO: このスイッチも動的メソッドで呼び出すように変更する
+        // TODO: partsReplaceBaseInputTypeHome というメソッド名にする？
         switch ($item['type']) {
             case 'hidden':
             case 'text':
@@ -306,6 +311,7 @@ class Template
 
         $output_value = '';
 
+        // TODO: partsReplaceBaseOutput というメソッド名にする？
         /**
          * ['label_output'] を配慮したクロージャ―
          * @param  array        $item
@@ -571,10 +577,10 @@ class Template
      */
     protected function domInstanceHtmlParse($html, $expression)
     {
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', Store::getConfig()['setting']['charset']));
 
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $html = $xpath->evaluate($expression);
 
         return [$dom, $html];

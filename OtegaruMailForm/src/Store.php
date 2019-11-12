@@ -1,5 +1,7 @@
 <?php
 
+namespace OtegaruMailForm\Src;
+
 /**
  * 状態を管理するクラス
  */
@@ -26,10 +28,10 @@ class Store
     /** @var array $error エラー値 */
     private static $error = [];
 
-    /** @var string $submit_name 送信モード名 */
-    private static $submit_name = '';
+    /** @var string $post_submit 送信ステータス */
+    private static $post_submit = '';
 
-    /** @var string $screen_name スクリーン名 */
+    /** @var string $screen_name 画面ステータス */
     private static $screen_name = '';
 
     /**
@@ -166,21 +168,21 @@ class Store
     }
 
     /**
-     * 送信モード名を保存する
-     * @param string $submit_name
+     * 送信ステータスを保存する
+     * @param string $post_submit
      */
-    public static function setSubmitName(string $submit_name)
+    public static function setPostSubmit(string $post_submit)
     {
-        static::$submit_name = $submit_name;
+        static::$post_submit = $post_submit;
     }
 
     /**
-     * 送信モード名を取得する
+     * 送信ステータスを取得する
      * @return string
      */
-    public static function getSubmitName()
+    public static function getPostSubmit()
     {
-        return static::$submit_name;
+        return static::$post_submit;
     }
 
     /**
