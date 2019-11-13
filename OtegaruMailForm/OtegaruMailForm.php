@@ -12,13 +12,17 @@
  * @copyright Copyright 2019 mhkkr
  * @link      https://github.com/mhkkr/Otegaru-Mail-Form
  *            https://github.com/mhkkr/Functions-Form (Old version)
- * @version   1.0.1
+ * @version   1.0.1a
  * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
 namespace OtegaruMailForm;
 
-spl_autoload_register();
+spl_autoload_register(function ($class) {
+    $class = str_replace('OtegaruMailForm\Src', 'src', $class);
+    $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    require(__DIR__ . '/' . $class . '.php');
+});
 
 /**
  * 本体クラスの拡張クラス
