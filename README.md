@@ -5,9 +5,23 @@
 煩雑なコードを見直して作り直しました。  
 機能的にはあまり変わっていませんが、カスタマイズを考慮した設計になりました。
 
+## 使い方・読み込み例
+
+```
+<?php
+// ページの一番上でスクリプトを読み込む
+require(__DIR__ . '/OtegaruMailForm/OtegaruMailForm.php');
+$OtegaruMailForm = new OtegaruMailForm\App;
+
+// 表示したいところに記述
+<?php $OtegaruMailForm->display(); ?>
+```
+
 ## テンプレート例
 
-```edit.php<?= $template('edit', [
+```
+// 例：edit.php
+<?= $template('edit', [
     'key' => 'お名前',
     'label' => 'おなまえ',
     'attribute' => [
@@ -32,7 +46,9 @@
 ]); ?>
 ```
 
-```例：confirm.php<?= $template('例：confirm', [
+```
+// 例：confirm.php
+<?= $template('confirm', [
     'key' => 'お名前',
     'label' => 'おなまえ',
     'return_body' => '
