@@ -63,6 +63,9 @@ $OtegaruMailForm = new OtegaruMailForm\App;
         </div>
     ',
 ]); ?>
+
+// 標準テンプレートでは下記のショートコードで展開しています。
+{{ OtegaruMailForm.$template('confirm') }}
 ```
 
 ## 今後の予定
