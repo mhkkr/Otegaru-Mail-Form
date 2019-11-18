@@ -153,15 +153,15 @@ $setting['required_message'] = '必須項目です。';
     # バリデーションが 'confirm' のときに指定する参照先 (string) [null]
     'confirm' => 'メールアドレス'
 
-    # {{ label }} に出力される文字を指定する (array) [null]
+    # {{ label }} に出力される文字を指定する (string) ['']
     'label_input'  => '',
     'label_output' => '住所', // 同一指定があれば {{ value }} を連結（グループ化）して出力されます。
 
-    # {{ value }} に先頭に文字を挿入する (array) ['']
+    # {{ value }} に先頭に文字を挿入する (string) ['']
     'prefix_input'  => '',
     'prefix_output' => '〒', // 郵便番号のマークなど付けるなどに。
 
-    # {{ value }} に末尾に文字を挿入する (array) ['']
+    # {{ value }} に末尾に文字を挿入する (string) ['']
     'suffix_input'  => '',
     'suffix_output' => '円', // 単位など付けるなどに。
 
