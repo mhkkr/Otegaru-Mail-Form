@@ -9,7 +9,7 @@
 
 ```
 <?php
-// ページの一番上でスクリプトを読み込む
+// HTML 出力の前にスクリプトを読み込む
 require(__DIR__ . '/OtegaruMailForm/OtegaruMailForm.php');
 $OtegaruMailForm = new OtegaruMailForm\App;
 
